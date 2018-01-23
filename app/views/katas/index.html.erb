@@ -5,6 +5,10 @@
     <title>Katayuno App</title>
   </head>
   <body>
-    <%= link_to(@kata.title, kata_path(@kata.id)) %>
+    <ul>
+      <% @katas.each do |kata| %>
+        <li><%= link_to(kata.title, kata_path(kata.id)) %></li>
+      <% end %>
+    </ul>
   </body>
 </html>
