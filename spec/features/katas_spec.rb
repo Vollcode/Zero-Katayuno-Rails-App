@@ -3,6 +3,10 @@ require 'capybara'
 
 describe 'Kata' do
 
+  before(:each) do
+    log_in
+  end
+
   it 'can be read' do
       kata_title = 'Second title'
       kata_description = 'Second description'
@@ -22,8 +26,8 @@ describe 'Kata' do
 
       visit root_path
       click_on('New Kata')
-      fill_in(:title, with: kata_title)
-      fill_in(:description, with: kata_description)
+      fill_in(:kata_title, with: kata_title)
+      fill_in(:kata_description, with: kata_description)
       click_on('Save')
 
       expect(page).to have_content(kata_title)
@@ -58,6 +62,17 @@ describe 'Kata' do
     visit root_path
     expect(page).not_to have_content(kata_title2)
   end
+end
+
+def log_in
+  user = User.new(email: 'admin@test.com', password: 'qwerty')
+  user.save
+
+  visit '/users/sign_in'
+  fill_in(:user_email, with: user.email)
+  fill_in(:user_password, with: user.password)
+  click_on('Log in')
+
 end
 
 def create_kata(title: 'Kata title', description: 'Super Kata')
